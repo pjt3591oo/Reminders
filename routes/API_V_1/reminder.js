@@ -4,7 +4,7 @@ var router = express.Router();
 let { reminder, reminderListItem, S } = require('../../models')
 
 router.get('/', async (req, res) => {
-    try{
+    try {
         let reminders = await reminder.findAll({
             order: [['createdAt', 'DESC']]
         })
@@ -41,7 +41,7 @@ router.put("/:listId", async (req, res) => {
         return res.status(404).json({msg: `parameter가 충분하지 않습니다.(listId, name)`})
     }
 
-    try{
+    try {
         let updatedCnt = await reminder.update({
             name: name
         },{
@@ -71,7 +71,7 @@ router.delete("/:listId", async (req, res) => {
         return res.status(404).json({msg: `parameter가 충분하지 않습니다.(name)`})
     }
 
-    try{
+    try {
         let deletedCnt = await reminder.destroy({
             where: {id: listId}
         })
