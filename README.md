@@ -56,7 +56,7 @@ $ npm run production
 * 1.1 reminder 조회
 
 method: GET
-path: /
+path: /reminder
 response:
 
 ```code```: 200
@@ -85,7 +85,7 @@ response:
 
 * 1.2 reminder 생성
 
-path: /
+path: /reminder
 method: POST
 request: BODY
 
@@ -119,7 +119,7 @@ response:
 
 * 1.3 reminder 수정
 
-path: /:listId
+path: /reminder/:listId
 method: PUT
 request: BODY
 
@@ -151,7 +151,7 @@ response:
 
 * 1.4 reminder 삭제
 
-path: /:listId
+path: /reminder/:listId
 method: DELETE
 response:
 
@@ -174,7 +174,7 @@ response:
 * 2.1 reminderItem 조회
 
 method: GET
-path: /:listId
+path: /reminderitem/:listId
 response:
 
 ``code``: 200
@@ -217,7 +217,7 @@ response:
 * 2.2 reminderItem 생성
 
 method: POST
-path: /:listId
+path: /reminderitem/:listId
 request: BODY
 
 ```json
@@ -258,7 +258,7 @@ response:
 * 2.3 reminderItem 수정
 
 method: PUT
-path: /:listId/:itemId
+path: /reminderitem/:listId/:itemId
 request: BODY
 ```json
 {
@@ -298,7 +298,7 @@ response:
 * 2.4 reminderItem 삭제
 
 method: PUT
-path: /:listId/:itemId
+path: /reminderitem/:listId/:itemId
 
 response:
 
