@@ -2,8 +2,44 @@
 
 # dependencies
 
+* modules
+
 ```bash
 $ npm install
+```
+
+* db config file
+
+``path`` : /config/db.json
+
+```
+{
+    "development": {
+      "username": "root",
+      "password": "password",
+      "database": "API_test_dev",
+      "host": "localhost",
+      "dialect": "mysql",
+      "logging" : true
+    },
+    "test": {
+      "username": "root",
+      "password": "password",
+      "database": "API_test_test",
+      "host": "localhost",
+      "dialect": "mysql",
+      "logging" : false
+  
+    },
+    "production": {
+      "username": "root",
+      "password": "password",
+      "database": "API_test",
+      "host": "localhost",
+      "dialect": "mysql",
+      "logging" : false
+    }
+  }
 ```
 
 # start
@@ -45,8 +81,8 @@ $ npm run production
 # 인터페이스 내역
 
 * 1 API 1.0
-    - 1.1. reminder
-    - 1.2. reminderItem
+    - 1.1. [reminder](https://github.com/pjt3591oo/Reminders/#1-reminder)
+    - 1.2. [reminderItem](https://github.com/pjt3591oo/Reminders/#2-reminderitem)
 
 # 인터페이스 상세내역
 
