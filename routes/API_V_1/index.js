@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var api = require('./api')
+var reminder = require('./reminder')
 
-router.use('/api', api)
+router.use('/reminder', reminder)
 
 module.exports = router;
