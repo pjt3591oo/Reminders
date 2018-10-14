@@ -33,4 +33,27 @@ router.post('/:listId', async (req, res) => {
     }
 })
 
+router.get('/:listId', async (req, res) => {
+    let { listId } = req.params
+
+    if ( !listId ) {
+        return res.status(404).json({msg: `parameter가 충분하지 않습니다.(listId)`})
+    }
+
+    try{
+        let reminderListItems = await reminder.findOne({
+            where: {id: listId},
+            include: [
+                {
+                    model: reminderListItem
+                }
+            ]
+        })
+        console.log(reminderListItems)
+        return res.status(200).json(reminderListItems)
+    } catch (err) {
+        return res.status(500).json(err)
+    }
+})
+
 module.exports = router;
