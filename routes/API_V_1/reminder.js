@@ -3,6 +3,18 @@ var router = express.Router();
 
 let { reminder, reminderListItem, S } = require('../../models')
 
+router.get('/', async (req, res) => {
+    try{
+        let reminders = await reminder.findAll({
+            order: [['createdAt', 'DESC']]
+        })
+
+        return res.status(200).json({lists: reminders})
+    } catch (err) {
+        return res.status(500).json(err)
+    }
+})
+
 router.post('/', async (req, res) => {
     let { name } = req.body;
 
@@ -17,13 +29,32 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.get('/', async (req, res) => {
+router.put("/:listId", async (req, res) => {
+    let { listId } = req.params;
+    let { name } = req.body;
+    
+    if (!listId || !name ) {
+        return res.status(404).json({msg: `parameter가 충분하지 않습니다.(listId, name)`})
+    }
+
     try{
-        let reminders = await reminder.findAll({
-            order: [['createdAt', 'DESC']]
+        let updatedCnt = await reminder.update({
+            name: name
+        },{
+            where: {id: listId}
         })
 
-        return res.status(200).json({lists: reminders})
+        // updatedCnt가 0이면 404 반환
+        if (!updatedCnt) {
+            return res.status(404).json({msg: `${listId}는 존재하지 않습니다.`})
+        }
+
+        // update 처리가 됬다면 조회 후 반환
+        let findedReminder = await reminder.findOne({
+            id: listId
+        })
+
+        return res.status(201).json({id: findedReminder['id'], createdAt:findedReminder['createdAt']})
     } catch (err) {
         return res.status(500).json(err)
     }
