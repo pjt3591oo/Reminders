@@ -47,9 +47,9 @@ router.put("/:listId", async (req, res) => {
         },{
             where: {id: listId}
         })
-
+        console.log(updatedCnt)
         // updatedCnt가 0이면 404 반환
-        if (!updatedCnt) {
+        if (!updatedCnt[0]) {
             return res.status(404).json({msg: `${listId}는 존재하지 않습니다.`})
         }
 
