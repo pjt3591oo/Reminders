@@ -126,24 +126,7 @@ router.delete('/:listId/:itemId', async (req, res) => {
     }
 
     try {
-        let updatedCnt = await reminderListItem.update({
-            status: "deleted"
-        }, {
-            where: {
-                $and: [
-                    {
-                        reminderId: listId,
-                    },{
-                        id: itemId
-                    }
-                ]
-            }
-        })
-
-        if (!updatedCnt[0]) {
-            return res.status(404).json({msg: `${listId}의 ${itemId}는 존재하지 않습니다.`})
-        }
-
+        // 조회를 먼저하는 이유는 update가 아니라 삭제를 하면 조회가 안 되기 때문.
         let findedReminderListItem = await reminderListItem.findOne({
             where: {
                 $and: [
@@ -156,6 +139,29 @@ router.delete('/:listId/:itemId', async (req, res) => {
             }
         })
 
+        let updatedCnt = await reminderListItem.update({
+            status: "deleted"
+        }, {
+            where: {
+                $and: [
+                    {
+                        reminderId: listId,
+                    },{
+                        id: itemId
+                    },
+                    {
+                        $not: {
+                            status: 'deleted'
+                        }
+                    }
+                ]
+            }
+        })
+        
+        if (!updatedCnt[0]) {
+            return res.status(404).json({msg: `${listId}의 ${itemId}는 존재하지 않습니다.`})
+        }
+        findedReminderListItem['status'] = "deleted"
         return res.status(201).json(findedReminderListItem)
     } catch (err) {
         return res.status(500).json(err)
