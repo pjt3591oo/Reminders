@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     reminder.associate = (models) => {
-        reminder.hasMany(models.reminderListItem)
+        reminder.hasMany(models.reminderListItem, { onDelete: 'cascade' })
     }
 
     return reminder;

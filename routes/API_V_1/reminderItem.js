@@ -12,14 +12,21 @@ router.get('/:listId', async (req, res) => {
 
     try {
         let reminderListItems = await reminder.findOne({
-            where: {id: listId},
+            where: {
+                id: listId
+            },
             include: [
                 {
-                    model: reminderListItem
+                    model: reminderListItem,
+                    where: {
+                        $not: {
+                            status: "deleted"
+                        }
+                    }
                 }
             ]
         })
-        console.log(reminderListItems)
+
         return res.status(200).json(reminderListItems)
     } catch (err) {
         return res.status(500).json(err)
@@ -32,6 +39,10 @@ router.post('/:listId', async (req, res) => {
     
     if ( !listId ) {
         return res.status(404).json({msg: `parameter가 충분하지 않습니다.(listId)`})
+    }
+
+    if ( !name || !status) {
+        return res.status(404).json({msg: `parameter가 충분하지 않습니다.(name, status)`})
     }
 
     try {
@@ -99,7 +110,50 @@ router.put('/:listId/:itemId', async (req, res) => {
 
         return res.status(201).json(findedReminderListItem)
     } catch (err) {
-        console.log(err)
+        return res.status(500).json(err)
+    }
+})
+
+router.delete('/:listId/:itemId', async (req, res) => {
+    let { listId, itemId } = req.params
+
+    if ( !listId ||  !itemId) {
+        return res.status(404).json({msg: `parameter가 충분하지 않습니다.(listId, itemId)`})
+    }
+
+    try {
+        let updatedCnt = await reminderListItem.update({
+            status: "deleted"
+        }, {
+            where: {
+                $and: [
+                    {
+                        reminderId: listId,
+                    },{
+                        id: itemId
+                    }
+                ]
+            }
+        })
+
+        if (!updatedCnt[0]) {
+            return res.status(404).json({msg: `${listId}의 ${itemId}는 존재하지 않습니다.`})
+        }
+
+        let findedReminderListItem = await reminderListItem.findOne({
+            where: {
+                $and: [
+                    {
+                        reminderId: listId,
+                    },{
+                        id: itemId
+                    }
+                ]
+            }
+        })
+
+        return res.status(201).json(findedReminderListItem)
+    } catch (err) {
         return res.status(500).json(err)
     }
 })

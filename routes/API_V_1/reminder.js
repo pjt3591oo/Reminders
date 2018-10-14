@@ -72,13 +72,15 @@ router.delete("/:listId", async (req, res) => {
     }
 
     try {
-        let deletedCnt = await reminder.destroy({
+
+        let deletedCntReminder = await reminder.destroy({
             where: {id: listId}
         })
 
-        if (!deletedCnt){
+        if (!deletedCntReminder){
             return res.status(404).json({msg: "삭제 대상없음"})
         }
+
         return res.status(201).json({msg: "성공적으로 삭제되었습니다."})
     } catch (err) {
         console.log(err)
