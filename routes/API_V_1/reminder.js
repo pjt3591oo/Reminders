@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     let { name } = req.body;
-
+    
     if ( !name ) {
         return res.status(404).json({msg: `parameter가 충분하지 않습니다.(name)`})
     }
