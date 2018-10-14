@@ -18,6 +18,10 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     let { name } = req.body;
 
+    if ( !name ) {
+        return res.status(404).json({msg: `parameter가 충분하지 않습니다.(name)`})
+    }
+
     try{
         let createdReminder = await reminder.create({
             name: name
@@ -58,6 +62,29 @@ router.put("/:listId", async (req, res) => {
     } catch (err) {
         return res.status(500).json(err)
     }
+})
+
+router.delete("/:listId", async (req, res) => {
+    let { listId } = req.params;
+
+    if ( !listId ) {
+        return res.status(404).json({msg: `parameter가 충분하지 않습니다.(name)`})
+    }
+
+    try{
+        let deletedCnt = await reminder.destroy({
+            where: {id: listId}
+        })
+
+        if (!deletedCnt){
+            return res.status(404).json({msg: "삭제 대상없음"})
+        }
+        return res.status(201).json({msg: "성공적으로 삭제되었습니다."})
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json(err)
+    }
+
 })
 
 module.exports = router;
