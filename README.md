@@ -1,5 +1,7 @@
 # API 테스트
 
+> api.http 파일로 API 테스트 가능
+
 # dependencies
 
 * modules
