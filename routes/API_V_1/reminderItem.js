@@ -27,6 +27,10 @@ router.get('/:listId', async (req, res) => {
             ]
         })
 
+        if(!reminderListItems) {
+            return res.status(404).json({msg: `${listId}에 등록된 item이 없습니다.`})
+        }
+
         return res.status(200).json(reminderListItems)
     } catch (err) {
         return res.status(500).json(err)
